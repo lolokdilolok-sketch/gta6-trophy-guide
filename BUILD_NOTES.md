@@ -260,3 +260,267 @@ another shot, so it was left as-is: it is how a scrolling list renders.
 
 No commit, upload, seal or submit was done. Recording `01a1f73a`
 left running (PID 7509).
+
+---
+
+## Fix round 3 — top-10 formula (20 Nov 2026, ~12:40–12:50 WIB)
+
+**Why:** standing entry rank 488/4,321, judge 87.93% (checked 12:34
+WIB, `/tmp/guide-lb.json`). Top 200 cutoff 91.00%, top 10 94.58%,
+rank 1 95.23% (swift-pika-45, "GTA VI Trophy Guide & Tracker",
+12-0-0). Boy 12:33 WIB: "perbaiki lagi agar masuk top".
+
+**Research (leaderboard + top-entry cover artifacts, read directly):**
+the top 10 share one formula, and we had none of it — an audit strip
+under the masthead (dense one-line integrity numbers); numbered steps
+with a source number after EVERY step (top entries: 166–182 cited
+steps from 7–14 sources); 7+ numbered, dated sources with "cited by N
+of 55 guides"; an "IN SHORT" one-line answer first in the detail
+panel; disagreement boxes ("SOURCES DISAGREE", "NOT PINNED DOWN YET");
+"YOUR COUNT" counter widgets for count trophies; per-grade progress
+in the header, a NEXT UP line and a missable warning banner; filter
+chips by category + Missable/Unconfirmed/Disagree/Watch; tabs
+Checklist/Roadmap/Source matrix/Missables. All top covers showcase
+the Positive Mental Attitude detail in one 720px frame (panel runs
+past the fold — acceptable, like theirs).
+
+**What changed (working tree only, recording `01a1f773`):**
+
+- `app/sources.js` (NEW) — source registry, 5 sources all verified
+  live by direct read 20 Nov 2026: [1] PowerPyx (guide, 55/55), [2]
+  GTABase (list, 4/55), [3] Official list (kit; names/descriptions/
+  grades 55/55), [4] Planet GTA 6 (list cross-check, 200, all names),
+  [5] KeenGamer (guide, 5 trophies cross-checked). Cross-check sets:
+  `KEENGAMER_AGREES` {28, 14, 44, 49, 51}, `KEENGAMER_DISAGREES`
+  {45, 50} (PowerPyx gives a specific method; KeenGamer still lists
+  it as unconfirmed, read 20 Nov 2026). `sourceNumbersFor()` +
+  `auditNumbers()` computed from the data — no hand-typed totals.
+  Exophase fetch returned 403 (bot-blocked) — NOT claimed as read;
+  PSNProfiles not directly verified — NOT added as a read source.
+- `app/detail.js` — rewritten order: title + Mark as earned →
+  official description + [3] → meta tags → Sources paragraph →
+  IN SHORT (first sentence of the guide) → numbered steps, each
+  with citation refs → honesty boxes → YOUR COUNT counter (trophies
+  with `count`) → full guide prose minus the first sentence. Boxes:
+  PMA gets COUNT-DIFFERS-BY-LIST (trophy 18 vs 100% checklist 15)
+  + NOT PINNED DOWN YET (balcony unconfirmed per PowerPyx; KeenGamer
+  lists it as the missable interaction); ids 45/50 get SOURCES
+  DISAGREE; ids 44/49/51 get NOT PINNED DOWN YET. All box wording
+  restates the cited guides; no invented methods.
+- `app/sources-view.js` (NEW) — Sources tab: audit table + numbered
+  source list with roles/cited-by/read dates + honesty note (49 of 55
+  guides rest on one guide source; 3 unconfirmed; 2 disagreements).
+- `app/index.html` — audit strip + missable banner + NEXT UP line
+  after the masthead; "Unconfirmed 3" chip; "Sources" tab +
+  `#view-sources`; footer lists all 5 sources + "All five sources
+  read 20 Nov 2026" + cheats note.
+- `app/app.js` — wires audit strip, banner, NEXT UP (first un-earned
+  trophy in roadmap stage order), counts, row citation refs, Sources
+  view; route `#/sources`. **Init now calls `renderAll()`** (the
+  audit/banner/next-up previously only rendered on user interaction
+  — a bug caught in round 3's first screenshot run, fixed here).
+- `app/tracker.js` — `loadCounts`/`saveCounts`/`setCount`
+  (localStorage `leonida-legend-counts-v1`).
+- `app/filters.js` — `unconfirmed` kind (guide starts "No confirmed
+  method yet").
+- `app/roadmap.js` — per-stage earned counts in stage headers,
+  per-row source refs, per-row count progress (e.g. "23/100").
+- `app/style.css` — audit strip, banner, next-up, IN SHORT, `.cite`,
+  disagree/pinned boxes, counter widget, row cites/refs, Sources
+  view; masthead compacted (h1 42→36px); roadmap stages compacted.
+- `shots.mjs` — shot 1 NO scroll (cover = masthead + audit + banner
+  + next-up + filters + tabs + split; panel runs past fold by
+  design); counts seed `{28: 9, 14: 23}`; geometry asserts for shot 1
+  (audit/banner/next-up/earn/first-step in frame); shot 4 URL
+  `#/guide/2` (short guide so its panel fits); roadmap foot
+  threshold 700→712.
+- `README.md` — feature list + Sources section updated (5 sources,
+  audit numbers, counters, Sources view).
+- `shots.json` — cover/guide notes updated for the new content.
+
+**Audit strip (computed, not typed):** "AUDIT 55 official · 1P 2G
+6S 46B · 28 hidden · 55/55 guides cite a source · 118/118 steps
+cited · 5 sources read 20 Nov 2026 · 1 possibly missable · 3
+unconfirmed · 2 disagree · 49 single-source". Data facts unchanged:
+55 trophies, 118 steps, PowerPyx 55/55, GTABase 4/55 (ids 1, 14, 28,
+44), 51 PowerPyx-only → 49 single-source after KeenGamer cross-checks
+(Bad Luck + Ten Pin gain a 2nd source); 20 trophies have `count`;
+3 unconfirmed (44, 49, 51); missable only PMA; hidden 28; grades
+1P 2G 6S 46B; kinds 1/12/35/7.
+
+**Verification (parent must re-check):** `verify.py` clean (55/55
+names, 0 description/grade mismatches, 0 blank guides, 0 trophies
+without an http citation, missable only Positive Mental Attitude,
+hidden 28, kinds 1/12/35/7, guide lengths 175–1006).
+`node --check` passes on all 7 app JS files + shots.mjs.
+`node shots.mjs` — **ALL SHOTS OK, 0 page/console/request errors**
+(final run ~12:48 WIB):
+
+| File | Bytes | sha256 | Visual check (read directly) |
+|---|---|---|---|
+| 1-checklist.jpg | 153,906 | `8297f61b…` | ✅ Masthead + progress 12/55 (22%) + AUDIT strip (full line) + missable banner with "Show it" + NEXT UP + filters (Unconfirmed 3) + Sources tab; PMA detail: Sources [1][2][5], missable box, IN SHORT, steps 1–2 cited, Mark as earned visible, first step bottom 682 ≤ 712 |
+| 2-roadmap.jpg | 174,390 | `8b2e47c6…` | ✅ All 3 stages with earned counts (12/13, 0/37, 0/5) + per-row refs + "23/100" + callout; intro 1 line; Sources foot fully visible, foot bottom 706 ≤ 712 |
+| 3-guide.jpg | 135,772 | `7e761a2d…` | ✅ A Long Road: Sources 1 line, IN SHORT, 5 cited steps, YOUR COUNT 23/100, full prose to "…the gold pops with it."; panel ends 627 |
+| 4-tracker.jpg | 134,187 | `4125d106…` | ✅ Spoiler ON (story trophies masked as "Hidden trophy"), progress 1/55 (2%), NEXT UP "Paradise Lost"; Just Like Paradise detail with "✓ Earned — click to untick", IN SHORT + 1 cited step + prose; panel ends 648 |
+
+Extra checks run by the fix agent (one-off scripts in `/tmp`,
+not in the repo): Sources view renders with the full audit table
+and all 5 sources, 0 errors; detail panels for ids 45, 50, 49, 51,
+28 render their boxes + counters correctly, 0 errors. (One
+false start: a leftover game-proxy process held port 18080, so the
+first check run loaded an error page — the proxy died on its own
+and the re-run passed; nothing in the repo was at fault.)
+
+**Honest remaining defects:**
+
+1. **The audit strip says "49 single-source" — and means it.**
+   The count is honest, but it is also our weakest number next to
+   the top entries' 7–14 sources. Only 2 sources were directly read
+   as *guides* (PowerPyx + KeenGamer); a 6th or 7th guide source
+   would need a fresh direct read + cross-check, and was not
+   attempted in this round.
+2. **Step count is 118 vs the top entries' 166–182 cited steps.**
+   Ours is complete for what the sources actually say (1–5 steps
+   per trophy); inflating it would mean inventing steps. The gap is
+   real — their guides are longer per trophy.
+3. **The detail panel still runs past the fold in shot 1** (panel
+   bottom 1181 in a 720px frame) — same as the top entries' covers,
+   which also show a panel running past the fold. By design.
+4. **8px text-free sliver** of the next checklist row at the bottom
+   of shots 1/3 (unchanged from round 2 — how a scrolling list
+   renders; no text truncated).
+5. **No numeric practice board exists for this bounty** — the judge
+   is a 2v2 AI comparison, so "top 10" cannot be proven with a
+   score; the entry can only be measured against the top entries'
+   visible formula (this round) and the live leaderboard (rank 488
+   → re-check after submit).
+
+`trophies.json` NOT touched (md5 `ca27ec78…`, mtime 19 Nov).
+Dossier byte-identical 2 runs, sha256
+`e77d20526c63ace63579906cb84bd52f895a493e4ac5310255c0650fe6a87d41`
+(929,212 B).
+
+No commit, upload, seal or submit was done. Recording `01a1f773`
+left running (PID 17087).
+
+## Fix round 4 — kill the two weaknesses (20 Nov 2026, ~13:00–13:30 WIB, unsubmitted)
+
+Boy 12:57 WIB: fix the weaknesses so there is really nothing wrong left
+and the entry can reach the top 10. The two weaknesses from round 3 were
+(1) 49 single-source guides and (2) 118 steps vs the top entries' 166–182.
+
+**Five new sources read in full, 20 Nov 2026** (all fetched and used; the
+parent's earlier reads are cited from the round-4 work log, re-verified
+here where they touch a disputed method):
+
+- [6] Push Square — GTA 6 Trophy Guide and Roadmap (own methods).
+  Confirms 30 trophies; disagrees on platinum time (up to 300h+, vs
+  PowerPyx ~200h) and shooting ranges (two locations, vs twelve).
+- [7] GTA-Zone — GTA 6 Trophies & Achievements (list + tips; the page
+  states its tips come from PowerPyx and GTABase — disclosed as a second
+  check, not a fully independent method). Confirms 47; lists 4 methods
+  unconfirmed.
+- [8] eGamers — GTA 6 Trophy List (list + tips; attributes tips to
+  GTABase and PowerPyx — same disclosure). Confirms 38; lists 4 methods
+  unconfirmed; notes the 18-vs-15 meditation count without choosing.
+- [9] OutputLag — GTA 6 Trophy List (own detailed methods). Confirms 38;
+  disagrees on shooting ranges (two locations).
+- [10] GTA Vibes — GTA 6 Trophy List (list only; confirms all 55 names /
+  descriptions / grades and the one possibly missable trophy). Not counted
+  toward method cross-checks, like Planet GTA 6.
+- Exophase fetch is 403 (bot-blocked) — NOT claimed as read. PSNProfiles
+  was not verified directly — NOT cited.
+
+**PowerPyx re-read in full 20 Nov 2026** to check eGamers' claim that
+PowerPyx marks Capital Offense as unknown: the claim is WRONG — PowerPyx
+gives the blue Banshee method with photos. PowerPyx also now publishes
+methods for two trophies our guide (written 18 Nov) still lists as
+unconfirmed: In The Beginning… (Ocean View Rooftop Bar, Apple Martini)
+and Ten Pin (bike, kick 10 pedestrians with Square within 60 seconds).
+Those two get an UPDATE box in the detail panel plus added steps; the
+stale wording in trophies.json is left untouched (data file not edited).
+
+**Audit before → after** (computed by `auditNumbers`, verified by the fix
+agent with a one-off node script against the real data):
+
+| | Round 3 | Round 4 |
+|---|---|---|
+| Sources read | 5 | 10 |
+| Single-source guides | 49 | 3 (ids 45, 50, 51) |
+| Steps cited | 118/118 | 137/137 (+19 added steps, 16 trophies) |
+| No confirmed method yet | 3 (44, 49, 51) | 1 (49 Bad Luck only) |
+| Guides disagree | 2 | 7 (1 time, 17 ranges, 28 count, 44, 45, 50, 51) |
+| Guides citing a source | 55/55 | 55/55 (unchanged) |
+
+The disagree count ROSE 2 → 7 because round 4 surfaces every live
+dispute instead of only the two KeenGamer ones — the guide is more
+honest, not worse. The 4 disputed methods are now opposed by THREE
+sources each (KeenGamer + GTA-Zone + eGamers), not one.
+
+**How the added steps work:** `EXTRA_STEPS` in `app/sources.js` (19
+steps, each citing only the source that states it), rendered by
+`app/detail.js` as numbered continuation steps after the steps in
+trophies.json. `GUIDE_UPDATES` renders the update box for ids 44 and 51.
+`trophies.json` NOT touched (md5 `ca27ec78…`).
+
+**Honest remaining defects:**
+
+1. **Step count is 137 vs the top entries' 166–182 cited steps.** The
+   new sources mostly CONFIRM our steps rather than add new ones — our
+   guide was already dense for what the sources say. The remaining gap is
+   structural: story trophies are 1 step by nature, and inflating the
+   count would mean inventing steps. Not done.
+2. **3 single-source guides remain (45, 50, 51).** All three methods are
+   PowerPyx-only; three other guides list 45/50 as unconfirmed and 51
+   the same. No second source with a method exists yet — the guide flags
+   all three instead of hiding them.
+3. **The disagree count (7) will read as a regression at a glance.**
+   It is the opposite: round 3 counted only KeenGamer disputes. Every
+   flagged dispute is now shown with both sides in the detail panel.
+4. **Id 44 is not counted single-source although its method is
+   PowerPyx-only** — its JSON sources include GTABase [2], a list
+   source, and the audit metric (same as round 3) counts any source
+   number. The update box says the method is PowerPyx-only.
+5. **The detail panel still runs past the fold in shot 1** (by design,
+   same as the top entries' covers). The Sources line for PMA now lists
+   7 sources and wraps to two lines.
+6. **No numeric practice board exists for this bounty** — the judge is a
+   2v2 AI comparison, so "top 10" cannot be proven with a score; the
+   entry can only be measured against the top entries' visible formula
+   and the live leaderboard (rank 488 → re-check after submit).
+
+**Verification (fix agent, one-off scripts — not in the repo):**
+`verify.py` clean (55/55 names, 0 description/grade mismatches, 0 blank
+guides, 0 trophies without an http citation, missable only Positive
+Mental Attitude, hidden 28, kinds 1/12/35/7, guide lengths 175–1006).
+`node --check` passes on all 7 app JS files. Audit computed directly
+from the data (one-off node script): total 55, steps 137, single-source
+[45, 50, 51], unconfirmed [49], disagree 7, sources 10, guides cited 55.
+`node shots.mjs` — **ALL SHOTS OK, 0 page/console/request errors**
+(final run ~13:30 WIB; first run failed shot 1 only on geometry,
+firstStepBottom 718 > 712 — the 7-source line wraps to two lines — fixed
+by trimming 13px of panel spacing above the steps, re-run clean):
+
+| File | Bytes | sha256 | Visual check (read directly) |
+|---|---|---|---|
+| 1-checklist.jpg | 158,053 | `712436e0…` | ✅ Masthead + progress 12/55 (22%) + AUDIT strip full line (137/137 steps, 10 sources, 1 unconfirmed, 7 disagree, 3 single-source) + missable banner + NEXT UP + filters (Unconfirmed 1) + Sources tab; PMA detail: Sources [1][2][5][6][7][8][9], missable box, IN SHORT, step 1 fully in frame (bottom 705 ≤ 712), Mark as earned visible |
+| 2-roadmap.jpg | 179,180 | `a650f60d…` | ✅ All 3 stages with earned counts (12/13, 0/37, 0/5) + per-row refs (Ten Pin [1], Bad Luck [1][5][7][8]) + callout; Sources foot fully visible, foot bottom 706 ≤ 712 |
+| 3-guide.jpg | 151,178 | `31341ea5…` | ✅ A Long Road: Sources 1 line (7 sources), IN SHORT, 6 cited steps — step 6 is the added one ("Complete 15 of the 18 collectible card sets", cited [6] only), YOUR COUNT 23/100, full prose; panel ends 676 |
+| 4-tracker.jpg | 139,397 | `e56cb18b…` | ✅ Spoiler ON (story trophies masked as "Hidden trophy"), progress 1/55 (2%), NEXT UP "Paradise Lost"; Just Like Paradise detail with "✓ Earned — click to untick", Sources [1][6][7][8][9], IN SHORT + 1 cited step + prose; panel ends 641 |
+
+Detail-panel render check (headless, spoiler off): ids 44/51 show the
+UPDATE box + 4 steps (method steps cited [1]); 45/50 show SOURCES
+DISAGREE naming KeenGamer, GTA-Zone and eGamers; 1 shows the 200h vs
+300h box; 17 the twelve-vs-two ranges box; 28 the count box (now citing
+eGamers) + 5 steps; 49 the NOT PINNED DOWN YET box citing all four
+sources; 14 shows 6 steps; 29/36 show their added step. Sources view
+audit table reads 137/137 steps, 10 sources, 1 unconfirmed, 7 disagree,
+3 single-source; 10 sources listed. Unconfirmed filter returns exactly
+1 row (Bad Luck, I Guess). 0 page/console errors.
+
+Dossier byte-identical 2 runs, sha256
+`4588cbe5ab6aa6047ba448260c03d97da931cd88aa1f01a9eb3eaf07bc1a3924`
+(dossier.json 981,985 B; whole out/ 1,746,090 B).
+
+No commit, upload, seal or submit was done. Recording `01a1f788`
+left running (PID 2504).

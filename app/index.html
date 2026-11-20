@@ -55,6 +55,7 @@
       <button type="button" data-kind="all" class="chip active">All <b>55</b></button>
       <button type="button" data-kind="story" class="chip">Story <b>12</b></button>
       <button type="button" data-kind="missable" class="chip chip-missable">⚠ Missable <b>1</b></button>
+      <button type="button" data-kind="watch" class="chip chip-watch">👁 Watch <b>4</b></button>
       <button type="button" data-kind="unconfirmed" class="chip chip-unconfirmed">? Unconfirmed <b>1</b></button>
       <button type="button" data-kind="collectibles" class="chip">Collectibles <b>7</b></button>
       <button type="button" data-kind="activities" class="chip">Activities <b>35</b></button>
@@ -78,6 +79,7 @@
   <section id="view-checklist" class="view active">
     <div class="split">
       <div class="list-col">
+        <div class="goal-bar" id="goal-bar" role="status"></div>
         <p class="list-meta" id="list-meta">Showing 55 of 55 trophies</p>
         <ul class="trophy-list" id="trophy-rows"></ul>
       </div>
@@ -86,10 +88,10 @@
   </section>
 
   <section id="view-roadmap" class="view">
-    <h2>Roadmap to the Platinum — about 200 hours</h2>
+    <h2>Roadmap to the Platinum — 200–250 hours (up to 300+)</h2>
     <p class="roadmap-intro">One playthrough is enough — no mission replay, no difficulty setting; free roam continues after the story and only one meditation can be missed.</p>
     <div class="stages" id="roadmap-stages"></div>
-    <p class="roadmap-foot">Sources: PowerPyx — GTA 6 Trophy Guide &amp; Roadmap; GTABase — GTA 6 Trophy &amp; Achievement List. Times are PowerPyx estimates (story 60–80 h, checklist ~100 h, clean-up ~10 h).</p>
+    <p class="roadmap-foot">Platinum: ~200 h (PowerPyx, OutputLag) · 200–250 h (damnmodz) · up to 300+ h (Push Square). Stages: story 60–80 h · checklist ~100 h · clean-up ~10 h.</p>
   </section>
 
   <section id="view-missable" class="view">
@@ -101,7 +103,7 @@
       <ul>
         <li>All 12 story trophies — they unlock automatically and cannot be missed.</li>
         <li>All 5 side-character final missions (Andy, Kenton, Billy, Randy, Tyrone) — quest givers return after the story.</li>
-        <li>Strangers &amp; Freaks — all stranger strands stay available in free roam.</li>
+        <li>Strangers &amp; Freaks — all stranger strands stay available in free roam, EXCEPT Race Against Yago in Chapter 3: it is timed and can expire, so do it as soon as it appears.</li>
         <li>Every robbery, vault, gang operation, race, range and collectible — all doable after the credits.</li>
         <li>Optional missions that disappear mid-story do not matter: there are 200–300+, and the 100% checklist only needs 100.</li>
       </ul>
@@ -116,7 +118,7 @@
 
 <footer>
   <p>Leonida Legend is an unofficial fan-made guide. Grand Theft Auto and GTA are trademarks of Take-Two Interactive; this guide uses no Rockstar logo, artwork or game screenshots. Trophy names and descriptions are shown as PlayStation publishes them; every guide is written for this entry in our own words and cites its sources. Progress is saved in your browser (localStorage) and never leaves your device — export and import are local files. Cheats disable trophies and saving while active — keep them off.</p>
-  <p class="footer-sources">Sources: <a href="https://www.powerpyx.com/gta-6-grand-theft-auto-vi-trophy-guide-roadmap/">PowerPyx — GTA 6 Trophy Guide &amp; Roadmap</a> · <a href="https://www.gtabase.com/articles/gta-6/gta-6-achievements-trophies-list-ps5-xbox-series">GTABase — GTA 6 Trophy &amp; Achievement List</a> · <a href="https://www.keengamer.com/articles/guides/gta-6-trophy-guide-platinum-roadmap-all-55-trophies/">KeenGamer — GTA 6 Trophy Guide &amp; Platinum Roadmap</a> · <a href="https://www.planetgta6.com/en/gta-6-trophies/">Planet GTA 6 — trophy list (Exophase / PSNProfiles cross-check)</a> · Official PS5 trophy list as shipped in this contest’s kit. All five sources read 20 Nov 2026.</p>
+  <p class="footer-sources">Sources: <a href="https://www.powerpyx.com/gta-6-grand-theft-auto-vi-trophy-guide-roadmap/">PowerPyx — GTA 6 Trophy Guide &amp; Roadmap</a> · <a href="https://www.gtabase.com/articles/gta-6/gta-6-achievements-trophies-list-ps5-xbox-series">GTABase — GTA 6 Trophy &amp; Achievement List</a> · <a href="https://www.keengamer.com/articles/guides/gta-6-trophy-guide-platinum-roadmap-all-55-trophies/">KeenGamer — GTA 6 Trophy Guide &amp; Platinum Roadmap</a> · <a href="https://www.planetgta6.com/en/gta-6-trophies/">Planet GTA 6 — trophy list (Exophase / PSNProfiles cross-check)</a> · <a href="https://www.pushsquare.com/guides/gta-6-trophy-guide-and-roadmap">Push Square — GTA 6 Trophy Guide and Roadmap</a> · <a href="https://gta-zone.com/news/gta-6-trophies-achievements/">GTA-Zone — GTA 6 Trophies &amp; Achievements</a> · <a href="https://egamers.io/gta-6-trophy-list-all-55-trophies-and-achievements-plus-the-hardest-ones/">eGamers — GTA 6 Trophy List</a> · <a href="https://outputlag.com/guides/gta-6-trophy-list/">OutputLag — GTA 6 Trophy List</a> · <a href="https://www.gtavibes.com/guides/gta-6-trophy-list-achievements">GTA Vibes — GTA 6 Trophy List &amp; Achievements</a> · <a href="https://damnmodz.com/wiki/playstation-trophies/gta-6/">damnmodz — GTA 6 Trophies wiki</a> · Official PS5 trophy list as shipped in this contest’s kit. All eleven sources read 20 Nov 2026.</p>
 </footer>
 
 <script type="module" src="app.js"></script>

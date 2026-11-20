@@ -49,20 +49,30 @@ function linkFor(document, n) {
 // cites every source on either side — nothing is picked silently.
 const DISAGREE_TEXT = {
   1: {
-    text: 'PowerPyx and OutputLag put the platinum at about 200 hours; Push Square says up to 300 hours or more. The trophy itself (earn all 54 others) is agreed by all.',
-    cites: [1, 6, 9],
+    text: 'PowerPyx and OutputLag put the platinum at about 200 hours; damnmodz says 200–250; Push Square says up to 300 hours or more. The trophy itself (earn all 54 others) is agreed by all.',
+    cites: [1, 6, 9, 11],
   },
   17: {
-    text: 'PowerPyx and GTA-Zone count twelve shooting ranges; Push Square and OutputLag say two locations (Rodgers Ranch & Shooting Range, Port Gellhorn; Griffin Shooting Range, Balsero). All agree on 42 gold medals.',
-    cites: [1, 6, 7, 9],
+    text: 'PowerPyx and GTA-Zone count twelve shooting ranges; Push Square, OutputLag and damnmodz say two locations (Rodgers Ranch & Shooting Range, Port Gellhorn — 24 golds over 6 courses; Griffin Shooting Range, Balsero — 18 over 6). All agree on 42 gold medals.',
+    cites: [1, 6, 7, 9, 11],
   },
   45: {
-    text: 'PowerPyx gives a specific method with photos (blue Banshee through the showroom window, after the Key Cloner); KeenGamer, GTA-Zone and eGamers still list the exact method as unconfirmed (20 Nov 2026). Treat the method as reported, not confirmed.',
-    cites: [1, 5, 7, 8],
+    text: 'PowerPyx gives a specific method with photos (blue Banshee through the showroom window, after the Key Cloner); damnmodz repeats the same method (one underlying source). KeenGamer, GTA-Zone, eGamers and OutputLag still list the exact method as unconfirmed (20 Nov 2026). Treat the method as reported, not confirmed.',
+    cites: [1, 5, 7, 8, 9, 11],
   },
   50: {
-    text: 'PowerPyx gives a UFO easter egg method with photos (road north-west of Starlet Motel, after 2AM, alone); KeenGamer, GTA-Zone and eGamers still list the unlock as unconfirmed (20 Nov 2026). Treat the method as reported, not confirmed.',
-    cites: [1, 5, 7, 8],
+    text: 'PowerPyx gives a UFO easter egg method with photos (road north-west of Starlet Motel, after 2AM, alone); damnmodz independently confirms it. OutputLag lists the unlock as unconfirmed and offers a different lead instead (a graffiti code in Crosstown, also unconfirmed). KeenGamer, GTA-Zone and eGamers still list it as unconfirmed (20 Nov 2026). Treat the method as reported, not confirmed.',
+    cites: [1, 5, 7, 8, 9, 11],
+  },
+};
+
+// Best lead so far for a trophy with no confirmed method yet — a lead, not
+// a method. Shown under the NOT PINNED DOWN YET box; it never turns the
+// trophy into a confirmed one (see isUnconfirmed in sources.js).
+const LEAD_TEXT = {
+  49: {
+    text: 'BEST LEAD SO FAR — damnmodz (20 Nov 2026) suggests robbing the Payday Loans store in Little Cuba again, as Lucia and alone, after getting the Dye Pack Jammer in Chapter 3. Still unconfirmed — treat it as a lead, not a method.',
+    cites: [11],
   },
 };
 
@@ -218,9 +228,16 @@ export function renderDetailPanel(container, trophy, earnedIds, spoilerOn, onTog
   } else if (isUnconfirmed(trophy)) {
     const box = doc.createElement('p');
     box.className = 'detail-pinned';
-    box.append(doc.createTextNode('NOT PINNED DOWN YET — No confirmed method yet. PowerPyx, KeenGamer, GTA-Zone and eGamers all still list the trigger as unconfirmed (20 Nov 2026). This entry will be updated when a method is confirmed.'));
-    box.append(citeSpan(doc, [1, 5, 7, 8]));
+    box.append(doc.createTextNode('NOT PINNED DOWN YET — No confirmed method yet. PowerPyx, KeenGamer, GTA-Zone, eGamers, OutputLag and damnmodz all still list the trigger as unconfirmed (20 Nov 2026). This entry will be updated when a method is confirmed.'));
+    box.append(citeSpan(doc, [1, 5, 7, 8, 9, 11]));
     container.append(box);
+    if (LEAD_TEXT[trophy.id]) {
+      const lead = doc.createElement('p');
+      lead.className = 'detail-lead';
+      lead.append(doc.createTextNode(LEAD_TEXT[trophy.id].text));
+      lead.append(citeSpan(doc, LEAD_TEXT[trophy.id].cites));
+      container.append(lead);
+    }
   }
 
   // The reader's own running count toward this trophy's target.

@@ -44,75 +44,162 @@ function currentFilters() {
   };
 }
 
+// Stage a trophy belongs to, from the roadmap's three stages (same order
+// as the roadmap view). The checklist groups its rows under these stages.
+const STAGE_OF = new Map();
+ROADMAP_STAGES.forEach((s, i) => s.trophyIds.forEach((id) => STAGE_OF.set(id, i)));
+
+function buildTrophyRow(t) {
+  const li = document.createElement('li');
+  li.className = 'trophy-row' + (t.id === selectedId ? ' selected' : '') + (earnedIds.has(t.id) ? ' earned' : '');
+  li.addEventListener('click', () => selectTrophy(t.id));
+
+  const box = document.createElement('input');
+  box.type = 'checkbox';
+  box.checked = earnedIds.has(t.id);
+  box.setAttribute('aria-label', `Mark ${t.name} as earned`);
+  box.addEventListener('click', (e) => e.stopPropagation());
+  box.addEventListener('change', () => {
+    earnedIds = toggleEarnedId(earnedIds, t.id);
+    renderAll();
+  });
+  li.append(box);
+
+  const grade = document.createElement('span');
+  grade.className = `grade-chip grade-${t.grade}`;
+  grade.textContent = gradeLabel(t.grade);
+  li.append(grade);
+
+  const mid = document.createElement('div');
+  const name = document.createElement('div');
+  name.className = 'trophy-name' + (isMasked(t, spoilerOn, earnedIds) ? ' masked' : '');
+  name.textContent = displayName(t, spoilerOn, earnedIds);
+  mid.append(name);
+  const desc = document.createElement('div');
+  desc.className = 'trophy-desc' + (isMasked(t, spoilerOn, earnedIds) ? ' masked' : '');
+  desc.textContent = displayDescription(t, spoilerOn, earnedIds);
+  mid.append(desc);
+  const tags = document.createElement('div');
+  tags.className = 'trophy-tags';
+  if (t.missable) {
+    const tag = document.createElement('span');
+    tag.className = 'tag tag-missable';
+    tag.textContent = '⚠ Missable';
+    tags.append(tag);
+  }
+  if (t.hidden && !isMasked(t, spoilerOn, earnedIds)) {
+    const tag = document.createElement('span');
+    tag.className = 'tag tag-hidden';
+    tag.textContent = 'Hidden';
+    tags.append(tag);
+  }
+  if (t.count) {
+    const tag = document.createElement('span');
+    tag.className = 'tag tag-count';
+    tag.textContent = `× ${t.count.toLocaleString('en-US')}`;
+    tags.append(tag);
+  }
+  // Source numbers for this trophy's guide, like the top guides show.
+  const cites = document.createElement('span');
+  cites.className = 'row-cites';
+  cites.textContent = sourceNumbersFor(t).map((n) => `[${n}]`).join(' ');
+  tags.append(cites);
+  mid.append(tags);
+  li.append(mid);
+
+  const kindEl = document.createElement('div');
+  kindEl.className = 'row-kind';
+  kindEl.textContent = t.kind === 'platinum' ? 'Platinum' : t.kind.charAt(0).toUpperCase() + t.kind.slice(1);
+  li.append(kindEl);
+
+  return li;
+}
+
 function renderTrophyList() {
   const shown = filterTrophies(trophies, currentFilters(), earnedIds);
-  listEl.replaceChildren();
+  const byStage = ROADMAP_STAGES.map(() => []);
+  const ungrouped = [];
   for (const t of shown) {
-    const li = document.createElement('li');
-    li.className = 'trophy-row' + (t.id === selectedId ? ' selected' : '') + (earnedIds.has(t.id) ? ' earned' : '');
-    li.addEventListener('click', () => selectTrophy(t.id));
-
-    const box = document.createElement('input');
-    box.type = 'checkbox';
-    box.checked = earnedIds.has(t.id);
-    box.setAttribute('aria-label', `Mark ${t.name} as earned`);
-    box.addEventListener('click', (e) => e.stopPropagation());
-    box.addEventListener('change', () => {
-      earnedIds = toggleEarnedId(earnedIds, t.id);
-      renderAll();
-    });
-    li.append(box);
-
-    const grade = document.createElement('span');
-    grade.className = `grade-chip grade-${t.grade}`;
-    grade.textContent = gradeLabel(t.grade);
-    li.append(grade);
-
-    const mid = document.createElement('div');
-    const name = document.createElement('div');
-    name.className = 'trophy-name' + (isMasked(t, spoilerOn, earnedIds) ? ' masked' : '');
-    name.textContent = displayName(t, spoilerOn, earnedIds);
-    mid.append(name);
-    const desc = document.createElement('div');
-    desc.className = 'trophy-desc' + (isMasked(t, spoilerOn, earnedIds) ? ' masked' : '');
-    desc.textContent = displayDescription(t, spoilerOn, earnedIds);
-    mid.append(desc);
-    const tags = document.createElement('div');
-    tags.className = 'trophy-tags';
-    if (t.missable) {
-      const tag = document.createElement('span');
-      tag.className = 'tag tag-missable';
-      tag.textContent = '⚠ Missable';
-      tags.append(tag);
+    const i = STAGE_OF.get(t.id);
+    if (i === undefined) ungrouped.push(t);
+    else byStage[i].push(t);
+  }
+  listEl.replaceChildren();
+  // One header per stage that still has rows after filtering, then its rows
+  // in roadmap order. A stage with no shown rows is skipped entirely, so
+  // every filter (kind, grade, search, earned, spoiler) keeps working.
+  const emitHeader = (title, hours, done, total, shownCount) => {
+    const header = document.createElement('li');
+    header.className = 'stage-group-header';
+    const titleEl = document.createElement('span');
+    titleEl.className = 'stage-group-title';
+    titleEl.textContent = title;
+    header.append(titleEl);
+    if (hours) {
+      const hoursEl = document.createElement('span');
+      hoursEl.className = 'stage-group-hours';
+      hoursEl.textContent = hours;
+      header.append(hoursEl);
     }
-    if (t.hidden && !isMasked(t, spoilerOn, earnedIds)) {
-      const tag = document.createElement('span');
-      tag.className = 'tag tag-hidden';
-      tag.textContent = 'Hidden';
-      tags.append(tag);
+    if (shownCount < total) {
+      const shownEl = document.createElement('span');
+      shownEl.className = 'stage-group-shown';
+      shownEl.textContent = `${shownCount} shown`;
+      header.append(shownEl);
     }
-    if (t.count) {
-      const tag = document.createElement('span');
-      tag.className = 'tag tag-count';
-      tag.textContent = `× ${t.count.toLocaleString('en-US')}`;
-      tags.append(tag);
-    }
-    // Source numbers for this trophy's guide, like the top guides show.
-    const cites = document.createElement('span');
-    cites.className = 'row-cites';
-    cites.textContent = sourceNumbersFor(t).map((n) => `[${n}]`).join(' ');
-    tags.append(cites);
-    mid.append(tags);
-    li.append(mid);
-
-    const kindEl = document.createElement('div');
-    kindEl.className = 'row-kind';
-    kindEl.textContent = t.kind === 'platinum' ? 'Platinum' : t.kind.charAt(0).toUpperCase() + t.kind.slice(1);
-    li.append(kindEl);
-
-    listEl.append(li);
+    const prog = document.createElement('span');
+    prog.className = 'stage-group-progress';
+    prog.textContent = `${done}/${total} earned`;
+    header.append(prog);
+    listEl.append(header);
+  };
+  ROADMAP_STAGES.forEach((stage, i) => {
+    const rows = byStage[i];
+    if (!rows.length) return;
+    const done = stage.trophyIds.filter((id) => earnedIds.has(id)).length;
+    emitHeader(stage.title, stage.hours, done, stage.trophyIds.length, rows.length);
+    for (const t of rows) listEl.append(buildTrophyRow(t));
+  });
+  if (ungrouped.length) {
+    const done = ungrouped.filter((t) => earnedIds.has(t.id)).length;
+    emitHeader('More trophies', null, done, ungrouped.length, ungrouped.length);
+    for (const t of ungrouped) listEl.append(buildTrophyRow(t));
   }
   metaEl.textContent = `Showing ${shown.length} of ${trophies.length} trophies`;
+}
+
+// GOAL bar above the checklist: the platinum goal, the next trophy in
+// roadmap order, and the reader's progress toward it.
+function renderGoalBar() {
+  const el = document.getElementById('goal-bar');
+  el.replaceChildren();
+  const earned = earnedIds.size;
+  const pct = Math.round((earned / trophies.length) * 100);
+  const top = document.createElement('div');
+  top.className = 'goal-top';
+  const label = document.createElement('span');
+  label.className = 'goal-label';
+  label.textContent = '🎯 GOAL — Platinum';
+  top.append(label);
+  const order = ROADMAP_STAGES.flatMap((s) => s.trophyIds);
+  const nextId = order.find((id) => !earnedIds.has(id));
+  const next = trophies.find((t) => t.id === nextId);
+  const nextEl = document.createElement('span');
+  nextEl.className = 'goal-next';
+  nextEl.textContent = next ? `Next: ${next.name}` : '🏆 Platinum earned — you are a Leonida Legend.';
+  top.append(nextEl);
+  const counts = document.createElement('span');
+  counts.className = 'goal-counts';
+  counts.textContent = `${earned}/${trophies.length} · ${pct}%`;
+  top.append(counts);
+  el.append(top);
+  const track = document.createElement('div');
+  track.className = 'goal-track';
+  const fill = document.createElement('div');
+  fill.className = 'goal-fill';
+  fill.style.width = `${pct}%`;
+  track.append(fill);
+  el.append(track);
 }
 
 function updateProgress() {
@@ -153,7 +240,7 @@ function renderAuditStrip() {
   const b = document.createElement('b');
   b.textContent = 'AUDIT';
   el.append(b, document.createTextNode(
-    ` ${a.total} official · 1P 2G 6S 46B · ${a.hidden} hidden · ${a.guidesCited}/${a.total} guides cite a source · ${a.steps}/${a.steps} steps cited · ${a.sourcesRead} sources read 20 Nov 2026 · ${a.missable} possibly missable · ${a.unconfirmed} unconfirmed · ${a.disagree} disagree · ${a.singleSource} single-source`,
+    ` ${a.total} official · 1P 2G 6S 46B · ${a.hidden} hidden · ${a.guidesCited}/${a.total} guides cite a source · ${a.steps}/${a.steps} steps cited · ${a.sourcesRead} sources read 20 Nov 2026 · ${a.missable} possibly missable · ${a.watch} watch · ${a.unconfirmed} unconfirmed · ${a.disagree} disagree · ${a.singleSource} single-source`,
   ));
 }
 
@@ -218,6 +305,7 @@ function renderRoadmap() {
 
 function renderAll() {
   renderTrophyList();
+  renderGoalBar();
   renderDetail();
   updateProgress();
   renderRoadmap();

@@ -524,3 +524,88 @@ Dossier byte-identical 2 runs, sha256
 
 No commit, upload, seal or submit was done. Recording `01a1f788`
 left running (PID 2504).
+
+## Fix round 6 — stage grouping + GOAL bar (20 Nov 2026, ~14:05–14:15 WIB, unsubmitted)
+
+Baseline (fix round 5, verified by parent): 165/165 steps cited, 11 sources,
+single-source 2 (45, 51), multi-source 53, watch 4, unconfirmed 1 (49),
+disagree 7. Standing entry is still fix round 4 (rank 98, judge 92.9357%).
+
+The one remaining structural gap vs the rank 4–5 entries was stage grouping
++ a GOAL bar. This round closes it:
+
+1. **Stage grouping in the checklist** (`app/app.js` + `app/style.css`).
+   The list is grouped under the roadmap's three stages, in roadmap order,
+   with a gold-ruled header per stage: stage title + hours + per-stage
+   earned count (e.g. "Stage 1 — Play the story · 60–80 hours · 12/13
+   earned"). A stage with no rows after filtering is skipped, and when a
+   filter hides rows the header says how many are shown (e.g. "12 shown").
+   Verified headless for every filter: all (3 headers, 55 rows), story
+   (1 header, 12 rows), platinum grade (Stage 3 only, 1 row), watch
+   (Stage 2: 1 shown, Stage 3: 3 shown, 4 rows), search "meditation"
+   (3 headers, 1 shown each), earned-only (Stage 1, 12 rows). 0 errors.
+2. **GOAL bar** (`app/index.html`, `app/app.js`, `app/style.css`): a gold-
+   bordered strip above the checklist — "🎯 GOAL — Platinum", the next
+   trophy in roadmap order, "12/55 · 22%", and a gold-to-pink progress
+   bar. It recomputes from the earned set (shot 4's 1-earned seed shows
+   "1/55 · 2%" and "Next: Paradise Lost").
+3. **Roadmap foot fixed** — was 710/712px (2px margin). Stage padding
+   6px→4px, roadmap intro margin 6px→4px, foot margin 6px→4px, and the
+   foot text shortened (same four platinum estimates, same stage times):
+   now foot bottom 702px (10px margin).
+4. **3 honest extra steps** (`app/sources.js` EXTRA_STEPS, all PowerPyx
+   [1], each a concrete sub-step the guide prose and steps did not state
+   — checked against the full guide text before adding): id 16, filter
+   for Activities on the map (blue dumbbell icon); id 21, the TV can be
+   temporarily unavailable during a story section (try again after the
+   story); id 39, destroy the security footage and disable the alarm in
+   the backroom. Candidates checked and REJECTED because the prose
+   already says them: 34 (Yasmani's Jewelry Jobs + back-room safe),
+   40 (2 Payday Loans first + purple icon), 47 (double progress +
+   Activities filter), 48 (click the trophy for the count), 46
+   (robbery icon respawns). Steps 165 → **168**.
+
+Audit (computed from data, one-off node script): total 55, steps **168**,
+single-source 2, multi-source 53, watch 4, unconfirmed 1, disagree 7,
+sources 11, guides cited 55. Everything else unchanged from round 5.
+
+**Verification (fix agent):** `verify.py` clean (55/55 names, 0
+description/grade mismatches, 0 blank guides, 0 trophies without an http
+citation, missable only Positive Mental Attitude, hidden 28, kinds
+1/12/35/7, guide lengths 175–1006). `node --check` passes on all 7 app
+JS files. Dossier byte-identical 2 runs, sha256
+`5ff67205e4d7184dcb8d6ebd5433045ea97a3baded8d0df519b0796d30025906`
+(dossier.json 1,036,913 B). `node shots.mjs` — **ALL SHOTS OK, 0
+page/console/request errors**, and the 4 screenshots are byte-identical
+across 2 regenerations:
+
+| File | Bytes | Visual check (read directly) |
+|---|---|---|
+| 1-checklist.jpg | 164,578 | ✅ GOAL bar (🎯 GOAL — Platinum · Next: Positive Mental Attitude · 12/55 · 22%, gold-pink fill) + audit strip 168/168 steps + Stage 1 header (12/13 earned) + first rows; PMA detail: Mark as earned visible, IN SHORT, step 1 fully in frame (bottom 695 ≤ 712) |
+| 2-roadmap.jpg | 182,945 | ✅ All 3 stages with earned counts (12/13, 0/37, 0/5) + per-row refs + Yago callout; foot one line, bottom 702 (10px margin) |
+| 3-guide.jpg | 172,373 | ✅ GOAL bar + Stage 1 header + rows; A Long Road: 8 cited steps, YOUR COUNT 23/100, full prose; panel ends 708 ≤ 712 |
+| 4-tracker.jpg | 146,276 | ✅ GOAL bar 1/55 · 2%, Next: Paradise Lost; Stage 1 header 1/13 earned; spoiler ON (story trophies masked); Just Like Paradise earned; panel ends 639 |
+
+**Honest gaps that remain:**
+1. **Steps 168 vs the top entries' 174 (R2/R3) and 366 (R1).** The
+   remaining gap is structural: story trophies are 1 step by nature and
+   the prose already states the details PowerPyx gives — the round-5
+   agent and this round both checked the source texts and found only
+   3 more honest sub-steps. Inflating the count would mean inventing
+   steps. Not done.
+2. **2 single-source guides remain (45, 51)** — PowerPyx-only methods;
+   no second source with a method exists yet.
+3. **1 unconfirmed (49, Bad Luck)** — no confirmed method anywhere;
+   only the BEST LEAD box.
+4. **Exophase/PSNProfiles still not read directly** (blocked: Exophase
+   curl 000, PSNProfiles 403) — cross-checked via Planet GTA 6, which
+   cites both.
+5. **Detail panel still runs past the fold in shot 1** (by design, same
+   as the top entries' covers).
+6. **Source matrix sits below the fold** in the Sources view
+   (scrollable) — not visible in any submit screenshot.
+7. **No numeric practice board exists for this bounty** — the judge is
+   a 2v2 AI comparison, so "top 10" cannot be proven with a score.
+
+No commit, upload, seal or submit was done. Recording `01a1f7b1`
+left running (PID 7619).

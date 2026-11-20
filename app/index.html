@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leonida Legend — GTA VI Trophy Guide &amp; Tracker</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23150a24'/%3E%3Ctext x='16' y='23' font-size='20' text-anchor='middle' fill='%23ffd166' font-family='Georgia,serif' font-weight='bold'%3EL%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="masthead-title">
+    <p class="kicker">GRAND THEFT AUTO VI &middot; PLAYSTATION 5 &middot; 55 TROPHIES</p>
+    <h1>LEONIDA LEGEND</h1>
+    <p class="subtitle">The complete trophy guide &amp; tracker — every trophy, every step, every source.</p>
+  </div>
+  <div class="progress-card" id="progress-card">
+    <div class="progress-ring" id="progress-ring"><span id="progress-pct">0%</span></div>
+    <div class="progress-lines">
+      <p class="progress-big"><strong id="earned-count">0</strong> of <strong>55</strong> earned</p>
+      <p class="progress-sub" id="progress-sub">Platinum 0/1 &middot; Gold 0/2 &middot; Silver 0/6 &middot; Bronze 0/46</p>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      <p class="progress-note" id="progress-note">Finish the story first — 12 trophies pop on their own.</p>
+    </div>
+  </div>
+</header>
+
+<nav class="controls" aria-label="Tracker controls">
+  <div class="control-row">
+    <label class="search-label">Search <input id="search" type="search" placeholder="Trophy, mission or keyword…" autocomplete="off"></label>
+    <label class="grade-label">Grade
+      <select id="grade">
+        <option value="all">All grades</option>
+        <option value="platinum">Platinum</option>
+        <option value="gold">Gold</option>
+        <option value="silver">Silver</option>
+        <option value="bronze">Bronze</option>
+      </select>
+    </label>
+    <label class="earned-label">Show
+      <select id="earned-filter">
+        <option value="all">All trophies</option>
+        <option value="unearned">Not earned yet</option>
+        <option value="earned">Earned only</option>
+      </select>
+    </label>
+    <label class="spoiler-toggle"><input id="spoiler" type="checkbox" checked> Hide spoilers <span class="spoiler-hint">story trophies stay hidden until earned</span></label>
+  </div>
+  <div class="control-row">
+    <div class="kind-chips" id="kind-chips" role="group" aria-label="Filter by kind">
+      <button type="button" data-kind="all" class="chip active">All <b>55</b></button>
+      <button type="button" data-kind="story" class="chip">Story <b>12</b></button>
+      <button type="button" data-kind="missable" class="chip chip-missable">⚠ Missable <b>1</b></button>
+      <button type="button" data-kind="collectibles" class="chip">Collectibles <b>7</b></button>
+      <button type="button" data-kind="activities" class="chip">Activities <b>35</b></button>
+    </div>
+    <div class="io-buttons">
+      <button id="export" type="button">⬇ Export progress</button>
+      <label class="import-btn">⬆ Import progress <input id="import" type="file" accept="application/json,.json"></label>
+      <button id="reset" type="button" class="quiet">Reset</button>
+    </div>
+  </div>
+</nav>
+
+<nav class="views" aria-label="Views">
+  <button type="button" data-view="checklist" class="view-tab active">✓ Checklist</button>
+  <button type="button" data-view="roadmap" class="view-tab">🗺 Roadmap to Platinum</button>
+  <button type="button" data-view="missable" class="view-tab">⚠ Missable <span class="view-badge">1</span></button>
+</nav>
+
+<main>
+  <section id="view-checklist" class="view active">
+    <div class="split">
+      <div class="list-col">
+        <p class="list-meta" id="list-meta">Showing 55 of 55 trophies</p>
+        <ul class="trophy-list" id="trophy-rows"></ul>
+      </div>
+      <aside class="detail-col" id="detail" aria-label="Trophy guide"></aside>
+    </div>
+  </section>
+
+  <section id="view-roadmap" class="view">
+    <h2>Roadmap to the Platinum — about 200 hours</h2>
+    <p class="roadmap-intro">One playthrough is enough. There is no mission replay and no difficulty setting, but free roam continues after the story and nothing except one meditation can be missed. Cheats disable trophies and saving — keep them off.</p>
+    <div class="stages" id="roadmap-stages"></div>
+    <p class="roadmap-foot">Sources: PowerPyx — GTA 6 Trophy Guide &amp; Roadmap; GTABase — GTA 6 Trophy &amp; Achievement List. Times are PowerPyx estimates (story 60–80 h, checklist ~100 h, clean-up ~10 h).</p>
+  </section>
+
+  <section id="view-missable" class="view">
+    <h2>Missable trophies</h2>
+    <p class="roadmap-intro">Only <strong>one</strong> trophy may be missable. Everything else can be done after the story in free roam — there is no mission replay, but nothing else is locked away.</p>
+    <div id="missable-list"></div>
+    <div class="safe-box">
+      <h3>What is NOT missable</h3>
+      <ul>
+        <li>All 12 story trophies — they unlock automatically and cannot be missed.</li>
+        <li>All 5 side-character final missions (Andy, Kenton, Billy, Randy, Tyrone) — quest givers return after the story.</li>
+        <li>Strangers &amp; Freaks — all stranger strands stay available in free roam.</li>
+        <li>Every robbery, vault, gang operation, race, range and collectible — all doable after the credits.</li>
+        <li>Optional missions that disappear mid-story do not matter: there are 200–300+, and the 100% checklist only needs 100.</li>
+      </ul>
+      <p class="safe-tip">Cheap insurance: keep a manual save at the start and end of each chapter (15 manual slots). Sources: PowerPyx; GTABase.</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Leonida Legend is an unofficial fan-made guide. Grand Theft Auto and GTA are trademarks of Take-Two Interactive; this guide uses no Rockstar logo, artwork or game screenshots. Trophy names and descriptions are shown as PlayStation publishes them; every guide is written for this entry in our own words and cites its sources. Progress is saved in your browser (localStorage) and never leaves your device — export and import are local files.</p>
+  <p class="footer-sources">Sources: <a href="https://www.powerpyx.com/gta-6-grand-theft-auto-vi-trophy-guide-roadmap/">PowerPyx — GTA 6 Trophy Guide &amp; Roadmap</a> · <a href="https://www.gtabase.com/articles/gta-6/gta-6-achievements-trophies-list-ps5-xbox-series">GTABase — GTA 6 Trophy &amp; Achievement List</a> · <a href="https://www.planetgta6.com/en/gta-6-trophies/">Planet GTA 6 — trophy list (Exophase / PSNProfiles cross-check)</a></p>
+</footer>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>

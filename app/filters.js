@@ -1,5 +1,6 @@
 // Filtering and the spoiler setting: which trophies the list shows, and how a
 // hidden story trophy looks until it is earned.
+import { isUnconfirmed } from './sources.js';
 export const KIND_LABELS = {
   all: 'All',
   story: 'Story',
@@ -12,6 +13,7 @@ export const KIND_LABELS = {
 export function kindMatches(trophy, kind) {
   if (kind === 'all') return true;
   if (kind === 'missable') return trophy.missable === true;
+  if (kind === 'unconfirmed') return isUnconfirmed(trophy);
   return trophy.kind === kind;
 }
 

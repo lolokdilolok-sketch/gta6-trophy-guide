@@ -1,6 +1,7 @@
 // Roadmap to the platinum and the missable list: three stages built from the
 // official descriptions, in the order PowerPyx's roadmap gives them.
 import { gradeLabel } from './filters.js';
+import { sourceNumbersFor } from './sources.js';
 
 export const ROADMAP_STAGES = [
   {
@@ -29,14 +30,15 @@ export const ROADMAP_STAGES = [
   },
 ];
 
-export function renderRoadmapStages(container, trophies, earnedIds, onSelectTrophy) {
+export function renderRoadmapStages(container, trophies, earnedIds, onSelectTrophy, counts = {}) {
   container.replaceChildren();
   const byId = new Map(trophies.map((t) => [t.id, t]));
   for (const stage of ROADMAP_STAGES) {
     const card = document.createElement('article');
     card.className = 'stage';
+    const done = stage.trophyIds.filter((id) => earnedIds.has(id)).length;
     const h = document.createElement('h3');
-    h.innerHTML = `${stage.title} <span class="hours">${stage.hours}</span>`;
+    h.innerHTML = `${stage.title} <span class="hours">${stage.hours}</span> <span class="stage-count">${done}/${stage.trophyIds.length} earned</span>`;
     card.append(h);
     const p = document.createElement('p');
     p.textContent = stage.blurb;
@@ -67,6 +69,18 @@ export function renderRoadmapStages(container, trophies, earnedIds, onSelectTrop
         done.className = 'done';
         done.textContent = ' ✓';
         li.append(done);
+      }
+      // Source numbers for this trophy's guide, and the reader's running
+      // count toward its target, if any.
+      const refs = document.createElement('span');
+      refs.className = 'row-refs';
+      refs.textContent = sourceNumbersFor(t).map((n) => `[${n}]`).join(' ');
+      li.append(refs);
+      if (t.count && (counts[t.id] ?? 0) > 0) {
+        const prog = document.createElement('span');
+        prog.className = 'row-count';
+        prog.textContent = `${counts[t.id]}/${t.count}`;
+        li.append(prog);
       }
       ul.append(li);
     }

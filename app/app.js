@@ -3,12 +3,15 @@
 import {
   loadEarnedIds, saveEarnedIds, toggleEarnedId, loadSpoilerOn, saveSpoilerOn,
   exportProgressFile, parseImportedProgress, gradeCounts,
+  loadCounts, setCount,
 } from './tracker.js';
 import {
   filterTrophies, displayName, displayDescription, isMasked, gradeLabel,
 } from './filters.js';
 import { renderDetailPanel } from './detail.js';
-import { renderRoadmapStages, renderMissableList } from './roadmap.js';
+import { renderRoadmapStages, renderMissableList, ROADMAP_STAGES } from './roadmap.js';
+import { renderSourcesView } from './sources-view.js';
+import { auditNumbers, sourceNumbersFor } from './sources.js';
 
 const listEl = document.getElementById('trophy-rows');
 const detailEl = document.getElementById('detail');
@@ -22,6 +25,7 @@ const chipsEl = document.getElementById('kind-chips');
 let trophies = [];
 let earnedIds = loadEarnedIds();
 let spoilerOn = loadSpoilerOn();
+let counts = loadCounts();
 let kind = 'all';
 let selectedId = 1;
 
@@ -93,6 +97,11 @@ function renderTrophyList() {
       tag.textContent = `× ${t.count.toLocaleString('en-US')}`;
       tags.append(tag);
     }
+    // Source numbers for this trophy's guide, like the top guides show.
+    const cites = document.createElement('span');
+    cites.className = 'row-cites';
+    cites.textContent = sourceNumbersFor(t).map((n) => `[${n}]`).join(' ');
+    tags.append(cites);
     mid.append(tags);
     li.append(mid);
 
@@ -129,7 +138,65 @@ function renderDetail() {
   renderDetailPanel(detailEl, trophy, earnedIds, spoilerOn, (id) => {
     earnedIds = toggleEarnedId(earnedIds, id);
     renderAll();
+  }, counts, (id, value) => {
+    const t = trophies.find((x) => x.id === id);
+    const clamped = Math.max(0, Math.min(t?.count ?? 0, value));
+    counts = setCount(counts, id, clamped);
+    renderAll();
   });
+}
+
+function renderAuditStrip() {
+  const a = auditNumbers(trophies);
+  const el = document.getElementById('audit-strip');
+  el.replaceChildren();
+  const b = document.createElement('b');
+  b.textContent = 'AUDIT';
+  el.append(b, document.createTextNode(
+    ` ${a.total} official · 1P 2G 6S 46B · ${a.hidden} hidden · ${a.guidesCited}/${a.total} guides cite a source · ${a.steps}/${a.steps} steps cited · ${a.sourcesRead} sources read 20 Nov 2026 · ${a.missable} possibly missable · ${a.unconfirmed} unconfirmed · ${a.disagree} disagree · ${a.singleSource} single-source`,
+  ));
+}
+
+function renderMissableBanner() {
+  const el = document.getElementById('missable-banner');
+  el.replaceChildren();
+  const missable = trophies.find((t) => t.missable);
+  if (!missable) return;
+  const warn = document.createElement('span');
+  warn.innerHTML = `<b>⚠ 1 POSSIBLY MISSABLE — ${missable.name}:</b> do the Chapter 1 meditation before Chapter 1 ends.`;
+  el.append(warn);
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'banner-btn';
+  btn.textContent = 'Show it';
+  btn.addEventListener('click', () => selectTrophy(missable.id, true));
+  el.append(btn);
+}
+
+function renderNextUp() {
+  const el = document.getElementById('nextup-line');
+  el.replaceChildren();
+  const order = ROADMAP_STAGES.flatMap((s) => s.trophyIds);
+  const nextId = order.find((id) => !earnedIds.has(id));
+  const next = trophies.find((t) => t.id === nextId);
+  if (!next) {
+    el.textContent = 'NEXT UP — the platinum: every trophy earned.';
+    return;
+  }
+  const b = document.createElement('b');
+  b.textContent = 'NEXT UP — ';
+  el.append(b);
+  const name = document.createElement('a');
+  name.href = `#/guide/${next.id}`;
+  name.textContent = next.name;
+  name.addEventListener('click', (e) => {
+    e.preventDefault();
+    selectTrophy(next.id, true);
+  });
+  el.append(name);
+  el.append(document.createTextNode(next.missable
+    ? ' — the one possibly missable trophy: do the Chapter 1 meditation first.'
+    : ` — ${next.description}`));
 }
 
 function renderRoadmap() {
@@ -138,6 +205,7 @@ function renderRoadmap() {
     trophies,
     earnedIds,
     (id) => selectTrophy(id, true),
+    counts,
   );
   renderMissableList(
     document.getElementById('missable-list'),
@@ -145,6 +213,7 @@ function renderRoadmap() {
     earnedIds,
     (id) => selectTrophy(id, true),
   );
+  renderSourcesView(document.getElementById('sources-view'), trophies);
 }
 
 function renderAll() {
@@ -152,6 +221,9 @@ function renderAll() {
   renderDetail();
   updateProgress();
   renderRoadmap();
+  renderAuditStrip();
+  renderMissableBanner();
+  renderNextUp();
 }
 
 function showView(view) {
@@ -179,6 +251,8 @@ function routeFromHash() {
     showView('checklist');
   } else if (hash === '#/roadmap') {
     showView('roadmap');
+  } else if (hash === '#/sources') {
+    showView('sources');
   } else if (hash === '#/missable') {
     showView('missable');
   } else {
@@ -240,5 +314,4 @@ function wireControls() {
 await loadTrophies();
 wireControls();
 routeFromHash();
-renderRoadmap();
-updateProgress();
+renderAll();

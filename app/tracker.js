@@ -2,6 +2,38 @@
 // and exportable / importable as a local JSON file. Nothing leaves the device.
 export const PROGRESS_KEY = 'leonida-legend-progress-v1';
 export const SPOILER_KEY = 'leonida-legend-spoiler-v1';
+export const COUNTS_KEY = 'leonida-legend-counts-v1';
+
+// Per-trophy counters (meditations, stunts, …): the reader's own running
+// count toward a trophy's `count` target. Same local-only storage as earned.
+export function loadCounts() {
+  try {
+    const raw = localStorage.getItem(COUNTS_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    if (typeof parsed !== 'object' || parsed === null) return {};
+    const out = {};
+    for (const [k, v] of Object.entries(parsed)) {
+      const id = Number(k);
+      if (Number.isInteger(id) && Number.isInteger(v) && v >= 0) out[id] = v;
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
+
+export function saveCounts(counts) {
+  localStorage.setItem(COUNTS_KEY, JSON.stringify(counts));
+}
+
+export function setCount(counts, id, value) {
+  const next = { ...counts };
+  if (value <= 0) delete next[id];
+  else next[id] = value;
+  saveCounts(next);
+  return next;
+}
 
 export function loadEarnedIds() {
   try {

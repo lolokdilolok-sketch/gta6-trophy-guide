@@ -14,36 +14,14 @@ export function renderSourcesView(container, trophies) {
   container.append(h);
   const intro = doc.createElement('p');
   intro.className = 'sources-intro';
-  intro.textContent = `Every guide step cites its source by number. List sources confirm trophy names, descriptions and grades; guide methods come from PowerPyx, cross-checked against six more guide sources (KeenGamer, Push Square, GTA-Zone, eGamers, OutputLag, damnmodz) where noted — ${a.multiSource} of ${a.total} guides now rest on two or more sources. A step that cites only [1] rests on one guide — the count below says so instead of hiding it.`;
+  intro.textContent = `Every guide step cites its source by number. List sources confirm trophy names, descriptions and grades; guide methods come from PowerPyx, cross-checked against seven more guide sources (KeenGamer, Push Square, GTA-Zone, eGamers, OutputLag, damnmodz and GTABase) where noted — ${a.multiSource} of ${a.total} guides now rest on two or more sources. A step that cites only [1] rests on one guide — the count below says so instead of hiding it.`;
   container.append(intro);
 
-  const table = doc.createElement('dl');
-  table.className = 'audit-table';
-  const rows = [
-    ['Official trophies', `${a.total} (1 platinum · 2 gold · 6 silver · 46 bronze)`],
-    ['Hidden on PS5', `${a.hidden}`],
-    ['Guides citing a source', `${a.guidesCited} of ${a.total}`],
-    ['Steps cited', `${a.steps} of ${a.steps}`],
-    ['Sources read', `${a.sourcesRead} — all read 20 Nov 2026`],
-    ['Guides on two or more sources', `${a.multiSource} of ${a.total}`],
-    ['Possibly missable', `${a.missable}`],
-    ['Watch — timed or single-source', `${a.watch}`],
-    ['No confirmed method yet', `${a.unconfirmed}`],
-    ['Guides disagree', `${a.disagree}`],
-    ['Single-source guides', `${a.singleSource} of ${a.total}`],
-  ];
-  for (const [k, v] of rows) {
-    const dt = doc.createElement('dt');
-    dt.textContent = k;
-    const dd = doc.createElement('dd');
-    dd.textContent = v;
-    table.append(dt, dd);
-  }
-  container.append(table);
-
-  // Source matrix: one row per trophy, one column per source — a ● where
-  // that trophy's guide rests on that source. Computed from the same
-  // sourceNumbersFor the detail panels use, so it cannot drift from them.
+  // Source matrix FIRST, before the audit table: it is the evidence for the
+  // counts below, and it is what the submit screenshot of this view shows.
+  // One row per trophy, one column per source — a ● where that trophy's
+  // guide rests on that source. Computed from the same sourceNumbersFor the
+  // detail panels use, so it cannot drift from them.
   const matrixTitle = doc.createElement('h3');
   matrixTitle.className = 'matrix-title';
   matrixTitle.textContent = 'Source matrix — which guide rests on which source';
@@ -78,6 +56,30 @@ export function renderSourcesView(container, trophies) {
   }
   container.append(matrix);
 
+  const table = doc.createElement('dl');
+  table.className = 'audit-table';
+  const rows = [
+    ['Official trophies', `${a.total} (1 platinum · 2 gold · 6 silver · 46 bronze)`],
+    ['Hidden on PS5', `${a.hidden}`],
+    ['Guides citing a source', `${a.guidesCited} of ${a.total}`],
+    ['Steps cited', `${a.steps} of ${a.steps}`],
+    ['Sources read', `${a.sourcesRead} — all read 20 Nov 2026`],
+    ['Guides on two or more sources', `${a.multiSource} of ${a.total}`],
+    ['Possibly missable', `${a.missable}`],
+    ['Watch — timed or single-source', `${a.watch}`],
+    ['No confirmed method yet', `${a.unconfirmed}`],
+    ['Guides disagree', `${a.disagree}`],
+    ['Single-source guides', `${a.singleSource} of ${a.total}`],
+  ];
+  for (const [k, v] of rows) {
+    const dt = doc.createElement('dt');
+    dt.textContent = k;
+    const dd = doc.createElement('dd');
+    dd.textContent = v;
+    table.append(dt, dd);
+  }
+  container.append(table);
+
   const ol = doc.createElement('ol');
   ol.className = 'source-list';
   for (const s of SOURCES) {
@@ -109,6 +111,6 @@ export function renderSourcesView(container, trophies) {
 
   const note = doc.createElement('p');
   note.className = 'sources-note';
-  note.textContent = `Honest limits: ${a.singleSource} of ${a.total} guides rest on a single guide source (PowerPyx) — Capital Offense has a reported method four other guides still list as unconfirmed, and Ten Pin’s method is PowerPyx-only for now (damnmodz repeats it and adds that a bicycle works too). One trophy (Bad Luck, I Guess) has no confirmed method yet. ${a.disagree} trophies carry a flagged disagreement in their guide — four disputed methods (two of them published after the guide text was written), the platinum-time dispute, the shooting-range count and the meditation count — all flagged in their guides instead of smoothed over. When a method is confirmed by a second source, the guide and this page are updated.`;
+  note.textContent = `Honest limits: ${a.singleSource} of ${a.total} guides rest on a single guide source (PowerPyx) — Capital Offense has a reported method five other guides still list as unconfirmed, and Ten Pin’s method is PowerPyx-only for now (damnmodz repeats it and adds that a bicycle works too; GTABase still lists it as unconfirmed). One trophy (Bad Luck, I Guess) has no confirmed method yet. ${a.disagree} trophies carry a flagged disagreement in their guide — five disputed methods (two of them published after the guide text was written), the platinum-time dispute, the shooting-range count, the meditation count and the Fair Game trigger animal — all flagged in their guides instead of smoothed over. When a method is confirmed by a second source, the guide and this page are updated.`;
   container.append(note);
 }

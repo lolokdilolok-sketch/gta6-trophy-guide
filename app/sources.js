@@ -50,9 +50,9 @@ export const SOURCES = [
     short: 'GTABase',
     name: 'GTABase — GTA 6 Trophy & Achievement List',
     url: 'https://www.gtabase.com/articles/gta-6/gta-6-achievements-trophies-list-ps5-xbox-series',
-    role: 'list',
-    roleText: 'List source — names, descriptions and grades; cited in the data for 4 trophies.',
-    citedBy: '4 of 55 guides',
+    role: 'guide',
+    roleText: 'Guide source — its “How to unlock” tips, read 20 Nov 2026, state a method in its own words for 50 of the 55 trophies (see GTABASE_AGREES); it still lists In The Beginning, Capital Offense, The Truth Is Out There and Ten Pin as unconfirmed, and Bad Luck as unconfirmed.',
+    citedBy: '50 of 55 guides (cross-checked)',
     read: '20 Nov 2026',
   },
   {
@@ -152,6 +152,20 @@ export const SOURCES = [
 // they unlock as part of the story; the three still-unconfirmed trophies
 // count where a source agrees the trigger is unconfirmed (id 49 only —
 // ids 44 and 51 now have a PowerPyx method, see GUIDE_UPDATES).
+// GTABase states a method in its own words for every trophy except the
+// five it still lists as unconfirmed (44, 45, 50, 51 — "the exact steps
+// aren't confirmed yet" — and 49, where it only guesses from the
+// description). Its per-trophy "How to unlock" tips were read 20 Nov 2026;
+// the added steps below cite [2] where GTABase is the source that states
+// them. GTABase also disagrees with damnmodz on id 29 (see
+// GTABASE_DISAGREES): it says which animal triggers Fair Game is not
+// confirmed yet, against damnmodz's Reported Snapmatic Buck.
+export const GTABASE_AGREES = new Set([
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+  21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
+  39, 40, 41, 42, 43, 46, 47, 48, 52, 53, 54, 55,
+]);
+export const GTABASE_DISAGREES = new Set([29]);
 export const KEENGAMER_AGREES = new Set([28, 14, 49]);
 export const PUSHSQUARE_AGREES = new Set([
   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -239,6 +253,7 @@ export const EXTRA_STEPS = {
     { text: 'Complete 15 of the 18 collectible card sets — the checklist needs 15, not all 18.', cite: [6] },
     { text: 'Moses and Randy’s vehicle deliveries count toward the 100 optional missions — do their delivery jobs while you work through the checklist.', cite: [1] },
     { text: 'The checklist also needs both unique playlists (2 of 2) — they count toward 100%.', cite: [11] },
+    { text: 'The checklist also needs 100 WAiNK scans — any 100 of the landmarks, curiosities, sculptures and No Flusher tags.', cite: [2] },
   ],
   15: [
     { text: 'The extra challenges on Stunt Jumps are not required — only the stunts themselves count.', cite: [6] },
@@ -250,6 +265,7 @@ export const EXTRA_STEPS = {
     { text: 'Start on the easiest of the three difficulty tiers at each range and work up.', cite: [6] },
     { text: 'Some challenges are locked until you fulfil other conditions — if a challenge is greyed out, finish the requirement first.', cite: [6] },
     { text: 'The two locations split the 42 golds: Rodgers Ranch & Shooting Range, Port Gellhorn (24 golds over 6 courses) and Griffin Shooting Range, Balsero (18 golds over 6 courses).', cite: [11] },
+    { text: 'Ranges also raise your Focus level, which helps with Gunslinger.', cite: [2] },
   ],
   18: [
     { text: 'Some locations charge an entry fee; track them under Map > Activities > Drones > Top Fun Drones.', cite: [6] },
@@ -260,24 +276,36 @@ export const EXTRA_STEPS = {
   ],
   20: [
     { text: 'You need a boat and a fishing rod: Cal asks for a Parrotfish over 2kg.', cite: [6] },
+    { text: 'Cal marks the fishing spot with a purple icon — follow it.', cite: [2] },
   ],
   21: [
     { text: 'If the TV is temporarily unavailable during a story section, try again after the story.', cite: [1] },
+    { text: 'The three TV games are Tenebrae Lux, Street Trash III and Time Jackers Rewind; the fourth, Bang For Your Buck, is on arcade cabinets around Leonida.', cite: [2] },
+  ],
+  22: [
+    { text: 'Andy’s five quests in order: Climbing the Cellerichain, Pay the Cellerica Fee, Peach!, Read the Label and Puff Puff Pass.', cite: [2] },
   ],
   23: [
     { text: 'The final mission is Kenton’s “Maritime Disputes” — finish it for the trophy.', cite: [6] },
+    { text: 'Dive at the purple chest markers and use the metal detector to dig the treasure up; track it under Progress > Collections > Kenton’s Treasures.', cite: [2] },
   ],
   25: [
     { text: 'Race Against Yago is timed and can expire — do it the moment it appears, and save first.', cite: [9] },
     { text: 'Only four of the eight counting strands have been identified so far (Kirk, Kyle, Yago, Pilot Pete) — the other four are not known yet.', cite: [11] },
+    { text: 'The quest lines that do NOT count are Moses, Tyrone, Yasmani, Andy, Billy and Eddie — only stranger strands count.', cite: [2] },
   ],
   26: [
     { text: 'The 16 cars: Zorrusso, Vitello, Infernus, Windsor Drop, Toros, Tempesta, Paragon, Jagular, Jubilee, Itali RSX, Growler, Gauntlet Hellfire, Furia, Dubsta, Banshee, Baller ST-D.', cite: [1] },
+    { text: 'Scan cars with the WAiNK app to see if they are on the list; hotel driveways around Vice Beach and Ocean Beach are the best places to look — cars in better condition pay more.', cite: [2] },
+  ],
+  27: [
+    { text: 'Tyrone’s labs are marked in purple around Vice City — destroy enough of them and his last job, Shut Down the Labs, awards the trophy.', cite: [2] },
   ],
   28: [
     { text: 'Wait for the final “zen” animation at each spot — the meditation only counts once it finishes.', cite: [6] },
     { text: 'Spots show as purple icons on the map when you get close.', cite: [9] },
     { text: 'Meditations are marked on the map under Exploration > Meditate Around Leonida.', cite: [6] },
+    { text: 'Meditating at a spot with Jason and Lucia together counts twice — and the last one needs both characters, possible after Coffee Break in Chapter 2.', cite: [2] },
   ],
   29: [
     { text: 'Take clean head or heart shots — a pristine carcass is what Bret wants.', cite: [9] },
@@ -290,16 +318,25 @@ export const EXTRA_STEPS = {
   31: [
     { text: 'Track each kind under Progress > Exploration > Landmarks / Curiosities / Sculptures / No Flushers.', cite: [6] },
     { text: 'Check WAiNK progress under Progress > Collections > WAiNK Locations.', cite: [6] },
+    { text: 'The 100 can come from 31 Landmarks, 35 Curiosities, 23 Sculptures and the No Flusher tags.', cite: [2] },
+  ],
+  32: [
+    { text: 'Finished challenges show a tick under Progress > Challenges.', cite: [2] },
+  ],
+  33: [
+    { text: 'Bank vault robberies always give 4 stars, so this often pops while doing Maximum Withdrawal.', cite: [2] },
   ],
   35: [
     { text: 'Getting inside a vehicle also discovers it — scanning is not the only way.', cite: [6, 11] },
   ],
   36: [
     { text: 'Each fish you land adds about 10% to the Focus meter — fish first, then fight.', cite: [9] },
+    { text: 'Cops, soldiers and civilians do not seem to count — use gang-operation thugs; wash up at home as well as eating and drinking to fill Focus.', cite: [2] },
   ],
   37: [
     { text: 'Save first: if the take-off goes wrong, reload and try the jet again.', cite: [9] },
     { text: 'The jet is a Bottcher 020 double-decker — look for the big double-decker at the boarding bridge.', cite: [11] },
+    { text: 'Planes parked out on the airfield do not count — only the jets docked at a departure gate’s boarding bridge.', cite: [2] },
   ],
   39: [
     { text: 'A good spot is Richardson Jewelry & Diamonds in Vice City.', cite: [9] },
@@ -307,13 +344,26 @@ export const EXTRA_STEPS = {
     { text: 'Stay out of camera view — cameras can spot you.', cite: [11] },
     { text: 'Destroy the security footage and disable the alarm in the backroom.', cite: [1] },
   ],
+  40: [
+    { text: 'Escape on a fast bike, then switch vehicles to become unrecognisable — and each vault pays up to $205,000.', cite: [2] },
+  ],
   41: [
     { text: 'Direct truck robberies can fail to pop the trophy — the vault-mission route is the surest way.', cite: [11] },
+    { text: 'Box the truck in first so it cannot drive off, then sticky-bomb its back doors.', cite: [2] },
+  ],
+  43: [
+    { text: 'Track each gang under Progress > Gangs — it shows how many of their operations you have robbed.', cite: [2] },
   ],
   44: [
     { text: 'Go to the Ocean View Rooftop Bar on Ocean Beach.', cite: [1] },
     { text: 'Buy an Apple Martini and drink it while standing next to the bar.', cite: [1] },
     { text: 'The bar is in the Oceanview Hotel on Ocean Beach — go past the pool to the rooftop access door and take the elevator up. The Apple Martini costs $10.', cite: [11] },
+  ],
+  46: [
+    { text: 'You do not need all three valuables in one visit — but the robbery takes a long time to come back, so grab what you can each time.', cite: [1, 2] },
+  ],
+  47: [
+    { text: 'Check Strength under Jason & Lucia in the pause menu — and after the story you can also work out at home.', cite: [2] },
   ],
   51: [
     { text: 'Ride any bike into a crowded area — Vice City or Ocean Beach.', cite: [1] },
@@ -326,6 +376,7 @@ export const EXTRA_STEPS = {
   54: [
     { text: 'The 8 garages: Mitchel Auto Center $4,000; 7th Avenue $12,000; Vela Rota $24,000; Persistence Road $7,600; Wyatt Motors $21,600; Bonita Court $34,000; Atlantic Court $40,000; Store n’ Bolt $16,800.', cite: [6] },
     { text: 'BuckMe’s 20% discount brings the total to $160,000 — $200,000 without it.', cite: [11] },
+    { text: 'The 4 garages the story gives you do not count — only the 8 for sale.', cite: [2] },
   ],
   55: [
     { text: 'From Chapter 3 you can also register cars with a standard tracker at any Pay ’n’ Spray.', cite: [9] },
@@ -339,11 +390,11 @@ export const EXTRA_STEPS = {
 // had no confirmed method; PowerPyx has since published one (page re-read
 // 20 Nov 2026), and damnmodz has since confirmed one of them (id 44) and
 // repeated the other (id 51, one underlying source). The method is the
-// added steps above, cited [1] and [11]; KeenGamer, GTA-Zone, eGamers and
-// OutputLag still list both trophies as unconfirmed.
+// added steps above, cited [1] and [11]; KeenGamer, GTA-Zone, eGamers,
+// OutputLag and GTABase still list both trophies as unconfirmed.
 export const GUIDE_UPDATES = {
-  44: 'UPDATE 20 NOV 2026 — This guide was written 18 Nov, when no method was confirmed (the first sentence and step 2 below still say so). PowerPyx has since published one: Ocean View Rooftop Bar, Apple Martini, drunk standing next to the bar — steps 3–5 below, cited [1] and [11]. A second guide, damnmodz, independently confirms it (Oceanview Hotel, past the pool, rooftop access door, elevator up). KeenGamer, GTA-Zone, eGamers and OutputLag still list it as unconfirmed.',
-  51: 'UPDATE 20 NOV 2026 — This guide was written 18 Nov, when no method was confirmed (the first sentence and step 2 below still say so). PowerPyx has since published one: ride a bike and kick 10 pedestrians with Square within 60 seconds — steps 3–5 below, cited [1] and [11]. damnmodz repeats the same method (one underlying source) and adds that a bicycle works too. KeenGamer, GTA-Zone, eGamers and OutputLag still list it as unconfirmed.',
+  44: 'UPDATE 20 NOV 2026 — This guide was written 18 Nov, when no method was confirmed (the first sentence and step 2 below still say so). PowerPyx has since published one: Ocean View Rooftop Bar, Apple Martini, drunk standing next to the bar — steps 3–5 below, cited [1] and [11]. A second guide, damnmodz, independently confirms it (Oceanview Hotel, past the pool, rooftop access door, elevator up). KeenGamer, GTA-Zone, eGamers, OutputLag and GTABase still list it as unconfirmed.',
+  51: 'UPDATE 20 NOV 2026 — This guide was written 18 Nov, when no method was confirmed (the first sentence and step 2 below still say so). PowerPyx has since published one: ride a bike and kick 10 pedestrians with Square within 60 seconds — steps 3–5 below, cited [1] and [11]. damnmodz repeats the same method (one underlying source) and adds that a bicycle works too. KeenGamer, GTA-Zone, eGamers, OutputLag and GTABase still list it as unconfirmed.',
 };
 
 // Source numbers cited by one trophy's data (its `sources` array) plus the
@@ -358,6 +409,7 @@ export function sourceNumbersFor(trophy) {
     const hit = SOURCES.find((x) => s.url && x.url && s.url === x.url);
     if (hit && !nums.includes(hit.n)) nums.push(hit.n);
   }
+  if (GTABASE_AGREES.has(trophy.id) && !nums.includes(2)) nums.push(2);
   if (KEENGAMER_AGREES.has(trophy.id) && !nums.includes(5)) nums.push(5);
   if (PUSHSQUARE_AGREES.has(trophy.id) && !nums.includes(6)) nums.push(6);
   if (GTAZONE_AGREES.has(trophy.id) && !nums.includes(7)) nums.push(7);
@@ -405,7 +457,7 @@ export function auditNumbers(trophies) {
   // count, or a disputed time. The strip counts what the detail panels flag.
   const disagreeIds = new Set([
     ...KEENGAMER_DISAGREES, ...GTAZONE_DISAGREES, ...EGAMERS_DISAGREES,
-    ...OUTPUTLAG_DISAGREES, ...RANGE_DISAGREES, ...COUNT_DISAGREES, ...TIME_DISAGREES,
+    ...OUTPUTLAG_DISAGREES, ...GTABASE_DISAGREES, ...RANGE_DISAGREES, ...COUNT_DISAGREES, ...TIME_DISAGREES,
   ]);
   return {
     total: trophies.length,

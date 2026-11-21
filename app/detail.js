@@ -57,12 +57,16 @@ const DISAGREE_TEXT = {
     cites: [1, 6, 7, 9, 11],
   },
   45: {
-    text: 'PowerPyx gives a specific method with photos (blue Banshee through the showroom window, after the Key Cloner); damnmodz repeats the same method (one underlying source). KeenGamer, GTA-Zone, eGamers and OutputLag still list the exact method as unconfirmed (20 Nov 2026). Treat the method as reported, not confirmed.',
-    cites: [1, 5, 7, 8, 9, 11],
+    text: 'PowerPyx gives a specific method with photos (blue Banshee through the showroom window, after the Key Cloner); damnmodz repeats the same method (one underlying source). KeenGamer, GTA-Zone, eGamers, OutputLag and GTABase still list the exact method as unconfirmed (20 Nov 2026). Treat the method as reported, not confirmed.',
+    cites: [1, 2, 5, 7, 8, 9, 11],
   },
   50: {
-    text: 'PowerPyx gives a UFO easter egg method with photos (road north-west of Starlet Motel, after 2AM, alone); damnmodz independently confirms it. OutputLag lists the unlock as unconfirmed and offers a different lead instead (a graffiti code in Crosstown, also unconfirmed). KeenGamer, GTA-Zone and eGamers still list it as unconfirmed (20 Nov 2026). Treat the method as reported, not confirmed.',
-    cites: [1, 5, 7, 8, 9, 11],
+    text: 'PowerPyx gives a UFO easter egg method with photos (road north-west of Starlet Motel, after 2AM, alone); damnmodz independently confirms it. OutputLag lists the unlock as unconfirmed and offers a different lead instead (a graffiti code in Crosstown, also unconfirmed). KeenGamer, GTA-Zone, eGamers and GTABase still list it as unconfirmed (20 Nov 2026). Treat the method as reported, not confirmed.',
+    cites: [1, 2, 5, 7, 8, 9, 11],
+  },
+  29: {
+    text: 'damnmodz reports the trigger animal as the Snapmatic Buck (labelled Reported — one underlying source); GTABase says which animal triggers the trophy is not confirmed yet. The Bret quest line itself is agreed — only the trigger animal is disputed.',
+    cites: [2, 11],
   },
 };
 
@@ -228,8 +232,8 @@ export function renderDetailPanel(container, trophy, earnedIds, spoilerOn, onTog
   } else if (isUnconfirmed(trophy)) {
     const box = doc.createElement('p');
     box.className = 'detail-pinned';
-    box.append(doc.createTextNode('NOT PINNED DOWN YET — No confirmed method yet. PowerPyx, KeenGamer, GTA-Zone, eGamers, OutputLag and damnmodz all still list the trigger as unconfirmed (20 Nov 2026). This entry will be updated when a method is confirmed.'));
-    box.append(citeSpan(doc, [1, 5, 7, 8, 9, 11]));
+    box.append(doc.createTextNode('NOT PINNED DOWN YET — No confirmed method yet. PowerPyx, KeenGamer, GTA-Zone, eGamers, OutputLag, GTABase and damnmodz all still list the trigger as unconfirmed (20 Nov 2026). This entry will be updated when a method is confirmed.'));
+    box.append(citeSpan(doc, [1, 2, 5, 7, 8, 9, 11]));
     container.append(box);
     if (LEAD_TEXT[trophy.id]) {
       const lead = doc.createElement('p');

@@ -224,16 +224,16 @@ select {
   position: sticky; top: 12px;
   background: var(--card); border: 1px solid var(--line);
   border-top: 4px solid var(--pink);
-  border-radius: var(--radius); padding: 8px 12px;
+  border-radius: var(--radius); padding: 7px 12px;
 }
 .detail-head { display: flex; gap: 10px; align-items: flex-start; }
 .detail-head h2 { flex: 1; min-width: 0; }
-.detail-col h2 { margin: 0 0 2px; font-size: 20px; line-height: 1.2; font-family: Georgia, serif; }
-.detail-official { color: var(--muted); font-style: italic; margin: 0 0 4px; font-size: 14px; }
-.detail-meta { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 4px; }
+.detail-col h2 { margin: 0 0 2px; font-size: 19px; line-height: 1.2; font-family: Georgia, serif; }
+.detail-official { color: var(--muted); font-style: italic; margin: 0 0 3px; font-size: 14px; }
+.detail-meta { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 3px; }
 .detail-guide { margin: 0 0 4px; font-size: 13px; line-height: 1.35; }
 .detail-guide strong { color: var(--gold); }
-.detail-steps { margin: 0 0 4px; padding-left: 20px; font-size: 13px; line-height: 1.35; }
+.detail-steps { margin: 0 0 4px; padding-left: 20px; font-size: 12.5px; line-height: 1.32; }
 .detail-steps li { margin-bottom: 1px; }
 .detail-short {
   margin: 0 0 4px; font-size: 13.5px; line-height: 1.4;
@@ -244,21 +244,21 @@ select {
 .cite { color: var(--gold); font-size: 11.5px; font-weight: 700; white-space: nowrap; }
 .detail-disagree {
   background: #3a2a08; border: 1px solid var(--gold); border-radius: 8px;
-  padding: 7px 10px; margin: 0 0 5px; font-size: 13px; line-height: 1.4;
+  padding: 6px 10px; margin: 0 0 4px; font-size: 13px; line-height: 1.4;
 }
 .detail-disagree::before { content: "⚠ "; }
 .detail-update {
   background: #0f2f2a; border: 1px solid var(--teal); border-radius: 8px;
-  padding: 7px 10px; margin: 0 0 5px; font-size: 13px; line-height: 1.4;
+  padding: 6px 10px; margin: 0 0 4px; font-size: 13px; line-height: 1.4;
 }
 .detail-update::before { content: "↻ "; }
 .detail-pinned {
   background: #241640; border: 1px dashed var(--faint); border-radius: 8px;
-  padding: 7px 10px; margin: 0 0 5px; font-size: 13px; line-height: 1.4; color: var(--muted);
+  padding: 6px 10px; margin: 0 0 4px; font-size: 13px; line-height: 1.4; color: var(--muted);
 }
 .detail-lead {
   background: #0f2f2a; border: 1px solid var(--teal); border-radius: 8px;
-  padding: 7px 10px; margin: 0 0 5px; font-size: 13px; line-height: 1.4;
+  padding: 6px 10px; margin: 0 0 4px; font-size: 13px; line-height: 1.4;
 }
 .detail-lead::before { content: "🔎 "; }
 .count-box {
@@ -276,10 +276,10 @@ select {
 .count-hint { font-size: 12px; color: var(--muted); }
 .detail-missable {
   background: #4a1220; border: 1px solid var(--danger); border-radius: 8px;
-  padding: 5px 10px; margin: 0 0 5px; font-size: 13px; line-height: 1.4;
+  padding: 5px 10px; margin: 0 0 4px; font-size: 13px; line-height: 1.4;
 }
 .detail-missable b { color: #ffb3b3; }
-.detail-sources { border-top: 1px solid var(--line); padding-top: 5px; margin: 0 0 4px; font-size: 12.5px; line-height: 1.4; color: var(--muted); }
+.detail-sources { border-top: 1px solid var(--line); padding-top: 4px; margin: 0 0 3px; font-size: 12.5px; line-height: 1.4; color: var(--muted); }
 .detail-earn {
   flex: none; white-space: nowrap; margin-top: 1px; padding: 7px 12px; border-radius: 8px; cursor: pointer;
   background: linear-gradient(90deg, var(--pink), var(--orange)); border: none;
@@ -340,9 +340,9 @@ select {
 .sources-note { color: var(--muted); max-width: 860px; font-size: 14px; line-height: 1.45; margin-top: 14px; }
 .matrix-title { font-size: 15px; margin: 18px 0 6px; }
 .source-matrix { border-collapse: collapse; font-size: 12px; margin-bottom: 18px; }
-.source-matrix th, .source-matrix td { border: 1px solid var(--border); padding: 2px 5px; text-align: center; color: var(--muted); }
+.source-matrix th, .source-matrix td { border: 1px solid var(--line); padding: 2px 5px; text-align: center; color: var(--muted); }
 .source-matrix th { color: var(--gold); font-size: 11px; }
-.source-matrix .matrix-name { text-align: left; color: var(--text); white-space: nowrap; max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
+.source-matrix .matrix-name { text-align: left; color: var(--ink); white-space: nowrap; max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
 .source-matrix .matrix-yes { color: var(--teal); font-weight: 700; }
 
 /* ---------- Footer ---------- */

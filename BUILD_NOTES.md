@@ -609,3 +609,139 @@ across 2 regenerations:
 
 No commit, upload, seal or submit was done. Recording `01a1f7b1`
 left running (PID 7619).
+
+## Fix round 7 — GTABase cross-check, 189 steps, matrix shot (20 Nov 2026, ~16:55–17:05 WIB, unsubmitted)
+
+Baseline (fix round 6, verified by parent): 168/168 steps cited, 11 sources,
+single-source 2 (45, 51), multi-source 53, watch 4, unconfirmed 1 (49),
+disagree 7. Standing entry is still fix round 6 (rank 87, judge 93.5001%;
+top-10 line 94.7135%, gap 1.21 points; rank 1 95.4816%). Quota exhausted
+(day 3/3, total cap held), so this round is built today and submitted
+tomorrow morning if quota recovers (daily reset 07:00 WIB). Deadline
+21 Nov 2026 18:00 WIB.
+
+What this round did:
+
+1. **Top-entry research, done honestly.** Leaderboard API
+   (`/api/competitions/gta6-trophy-guide-01/leaderboard`, 4,825 entries):
+   every top-10 repo is `source_withheld` — no repo URL, no commit, so
+   their code/screenshots cannot be read directly. "LEONIDA LEDGER" is a
+   generic title shared by dozens of entries, not one repo. Rank 6
+   (sushil-sk, 220 cited steps) and rank 5 (bassou) have no public GitHub
+   repo under those handles. The closest readable proxy is rank 12
+   (dockerhack/gta6-trophy-guide, 201 cited steps, 9 sources): its
+   `app.js` counts a "step" as one line of guide text
+   (`guide.split('\n')`), each line carrying its own citation — that is
+   how 201/220 is reached (about 4 short lines per trophy). Our 168
+   counted steps arrays + EXTRA_STEPS, not guide lines. Rank 9 (ejen,
+   "nine dated sources") dates each source; we already do that
+   ("read 20 Nov 2026" on every source) and now show it in a submit
+   screenshot too (item 4 below).
+2. **GTABase re-read as a guide source, not just a list** (`app/sources.js`).
+   Its per-trophy "How to unlock" tips, read 20 Nov 2026, state methods
+   in its own words for 50 of 55 trophies — new `GTABASE_AGREES` set
+   (all except 44, 45, 49, 50, 51, which it still lists as unconfirmed).
+   GTABase role changed list → guide; citedBy "50 of 55 guides
+   (cross-checked)". Per-trophy source lists and checklist row cites now
+   include [2] where it applies; the Sources-view matrix column [2] is
+   filled in. Single-source stays 2 (45, 51): GTABase lists both
+   unconfirmed, and damnmodz's Reported tips still do not count as a
+   second confirmation.
+3. **21 honest extra steps** (`app/sources.js` EXTRA_STEPS, all citing
+   [2] unless noted — each a concrete sub-step GTABase states that the
+   guide prose and steps did not already say, checked against the full
+   guide text first): 14 (100 WAiNK scans for the checklist), 17 (ranges
+   raise Focus, helps Gunslinger), 20 (Cal's purple icon), 21 (the three
+   TV game names + Bang For Your Buck on cabinets), 22 (Andy's five
+   quests in order), 23 (metal detector + Kenton's Treasures tracking),
+   25 (quest lines that do NOT count: Moses, Tyrone, Yasmani, Andy,
+   Billy, Eddie), 26 (scan cars to check the list; hotel driveways;
+   condition pays more), 27 (last job Shut Down the Labs), 28 (a joint
+   meditation counts twice; the last one needs both characters), 31
+   (31 Landmarks / 35 Curiosities / 23 Sculptures), 32 (finished
+   challenges show a tick), 33 (vault robberies always give 4 stars),
+   36 (cops/soldiers/civilians do not count; wash up at home), 37
+   (airfield-parked planes do not count), 40 (escape on a fast bike,
+   then switch vehicles; up to $205,000 per vault), 41 (box the truck
+   in first), 43 (Progress > Gangs keeps count), 46 (no need for all
+   three valuables in one visit — cites [1, 2], both state it), 47
+   (check Strength in the pause menu; train at home after the story),
+   54 (the 4 story garages do not count). Candidates checked and
+   REJECTED as already stated: 15 (under-the-bridge fastest), 16 (all
+   9 types listed), 18 (one win per location), 19 (40 spots), 24
+   (Thrillbilly Mudclub + Hometown Heroes), 30, 34, 35, 38, 39, 42,
+   48, 52, 53, 55. Steps 168 → **189**.
+4. **One new honest disagreement** — Fair Game (29): GTABase says which
+   animal triggers the trophy is not confirmed yet, against damnmodz's
+   Reported Snapmatic Buck (PowerPyx does not name the animal at all).
+   New `GTABASE_DISAGREES = {29}` + `DISAGREE_TEXT[29]` box in
+   `app/detail.js`; disagree 7 → **8**. GUIDE_UPDATES (44, 51) and the
+   DISAGREE boxes for 45/50 now also name GTABase among the guides
+   still listing them unconfirmed; the Bad Luck box likewise.
+5. **Source matrix made visible.** The Sources view now renders the
+   matrix FIRST (right after the intro), before the audit table, and
+   shot 3 is now the Sources view (`#/sources`, `3-sources.jpg`) instead
+   of the A Long Road guide — the matrix used to sit below the fold and
+   never appeared in a submit screenshot. `shots.mjs` geometry check
+   updated for the new shot (matrix title + first rows in-frame,
+   56 matrix rows). The stale `3-guide.jpg` was deleted so the dossier
+   still ships exactly 4 screenshots. Also fixed two undefined CSS
+   variables the matrix used (`--border` → `--line`, `--text` →
+   `--ink`), so its cell borders actually render.
+6. **Detail panel compacted** (`app/style.css`): panel padding 8px→7px,
+   title 20px→19px, steps 13px→12.5px / line-height 1.35→1.32, honesty
+   boxes 7px→6px padding. Shot 1's PMA panel now shows steps 1–2 fully
+   (first-step bottom 669 ≤ 712, was 695) and step 3 starting.
+
+Audit (computed from data, one-off node script): total 55, steps **189**,
+single-source 2, multi-source 53, watch 4, unconfirmed 1, disagree 8,
+sources 11, guides cited 55. trophies.json untouched
+(md5 ca27ec78a398d135b0fdae1fb67fbc58).
+
+**Verification (fix agent):** `verify.py` clean (55/55 names, 0
+description/grade mismatches, 0 blank guides, 0 trophies without an http
+citation, missable only Positive Mental Attitude, hidden 28, kinds
+1/12/35/7, guide lengths 175–1006). `node --check` passes on all 7 app
+JS files + shots.mjs. Dossier byte-identical 2 runs, sha256
+`bddeecf6c82155120702d62c1deee02c1bbcd022133db835057cb44f51e8f583`
+(dossier.json 1,017,667 B). `node shots.mjs` — **ALL SHOTS OK, 0
+page/console/request errors**:
+
+| File | Bytes | Visual check (read directly) |
+|---|---|---|
+| 1-checklist.jpg | 168,829 | ✅ GOAL bar (12/55 · 22%) + audit strip 189/189 steps, 8 disagree + Stage 1 header (12/13 earned) + first rows; PMA detail: Mark as earned visible, IN SHORT, steps 1–2 fully in frame (first-step bottom 669), step 3 starting; row cites now include [2] |
+| 2-roadmap.jpg | 184,000 | ✅ All 3 stages with earned counts (12/13, 0/37, 0/5) + per-row refs incl. [2] + Yago callout; foot one line, bottom 702 (10px margin) |
+| 3-sources.jpg | 138,510 | ✅ Sources tab active; audit strip 189/189; "Sources — numbered, dated, and counted" + intro (seven cross-check sources, 53/55 multi-source) + matrix title, header [1]–[11] and first 5 rows with ● dots and visible cell borders |
+| 4-tracker.jpg | 146,694 | ✅ GOAL bar 1/55 · 2%, Next: Paradise Lost; Stage 1 header 1/13 earned; spoiler ON (story trophies masked); Just Like Paradise earned; panel ends 632 |
+
+**Honest gaps that remain:**
+1. **Steps 189 vs rank 6's 220.** The remaining gap is structural:
+   the 11 story trophies are 1 step by nature (they unlock by finishing
+   a mission), and the guide prose already states the details the
+   sources give. The 21 steps added here are every further honest
+   sub-step GTABase states; the rest of the gap would need inventing
+   steps or splitting one action into two without a source. Not done.
+   The judge is a 2v2 AI comparison, not a step-count score — the
+   1.21-point gap to the top-10 line (94.7135% vs our 93.5001%) is
+   large for a pairwise judge, and nothing in this round proves it
+   closed. Do not claim top 10.
+2. **2 single-source guides remain (45, 51)** — PowerPyx-only methods;
+   GTABase lists both unconfirmed, damnmodz only repeats 51.
+3. **1 unconfirmed (49, Bad Luck)** — no confirmed method anywhere;
+   PowerPyx's lead (Payday Loans store, Little Cuba) is still only a
+   belief; only the BEST LEAD box.
+4. **Exophase/PSNProfiles still not read directly.** This round tried
+   again: Exophase via browser text fetch 404 (guessed trophy URL does
+   not exist) and PSNProfiles 403 — both still blocked, not claimed as
+   read. Cross-check remains via Planet GTA 6, which cites both.
+5. **Detail panel still runs past the fold in shot 1** (by design, same
+   as the top entries' covers) — compaction only bought ~26px.
+6. **A Long Road guide no longer has its own submit screenshot** (shot
+   3 is now the Sources view). Its 9 cited steps and counter are still
+   in the app and the audit strip; the trade-off was made for the
+   matrix, which no other shot showed.
+7. **No numeric practice board exists for this bounty** — the judge is
+   a 2v2 AI comparison, so "top 10" cannot be proven with a score.
+
+No commit, upload, seal or submit was done. Recording `01a1f860`
+left running.
